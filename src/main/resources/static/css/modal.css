@@ -1,0 +1,75 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+
+.modal {
+    background-color: rgba(110, 110, 110, 0.47);
+    font-family: Raleway, sans-serif;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+.modal-container {
+
+    animation-name: zoom;
+    animation-duration: 0.6s;
+
+    top: 30%;
+    left: 40%;
+    position: fixed;
+    width: 400px;
+    background: #ffffff;
+    border-radius: 10px;
+    z-index: 2;
+    padding: 10px;
+
+}
+
+@keyframes  zoom {
+    from{transform: scale(0)}
+    to{transform:scale(1)}
+}
+
+.modal-header{
+    padding: 10px;
+    background-color: #47c9af;
+    color: #ffffff;
+    text-align: left;
+    border-radius: 4px;
+}
+.modal-body {
+    padding: 10px;
+    line-height: 30px;
+    background-color: white;
+    color: #444444;
+    text-align: left;
+}
+.modal-footer{
+    padding: 10px;
+    background-color: white;
+    line-height: 20px;
+}
+.modal-button > button {
+    float: right;
+    padding: 10px 24px;
+    margin-left: 10px;
+    background-color: #47c9af;
+    color: white;
+    text-align: center;
+    font-family: Raleway, sans-serif;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 4px;
+    border: none;
+}
+
+.modal-button > button:hover {
+    background-color: white;
+    color: #444444;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.modal-button > button:focus {
+    outline: none;
+}

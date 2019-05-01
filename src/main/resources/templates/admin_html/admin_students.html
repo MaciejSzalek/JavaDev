@@ -1,0 +1,145 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <link href="../static/css/dialogs.css" th:href="@{/css/dialogs.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/dialogs.js}" defer></script>
+    <title>Students</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="cssmenu">
+            <ul>
+                <li><a href='/admin/home'>Home</a></li>
+                <li class ='active'><a href='/admin/students'>Students</a></li>
+                <li><a href='/admin/lectures'>Lectures</a></li>
+                <li><a href='/admin/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#">Maciej Szałek</a></li>
+                        <div class="dropdown-content">
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="title">
+            <p>STUDENTS LIST </p>
+        </div>
+        <div class="table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Student</th>
+                    <th>E-mail</th>
+                    <th>Index</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="student : ${studentList}">
+                    <td th:text="${student.id}">Id</td>
+                    <td th:text="${student.name} +' '+ ${student.surname}">Student</td>
+                    <td th:text="${student.mail}">E-mail</td>
+                    <td th:text="${student.indexNumber}">Index</td>
+                    <td><a th:href="@{/admin/students/edit/{id}(id=${student.id})}">Edit</a></td>
+                    <td><a th:href="@{/admin/students/delete/{id}(id=${student.id})}">Delete</a></td>
+                    <td><button th:attr="onclick=|DeleteStudent
+                                        .showDelete('${student.id}', '${student.name}', '${student.surname}')|">
+                        Custom</button>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot class="table-footer">
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td class="table-footer">
+                        <div class="addbtn">
+                            <button th:attr="onclick=|AddStudent.showAdd()|">Add student</button>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <div id="modal-add" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="addHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <table>
+                                <tr>
+                                    <td><label>Name</label></td>
+                                    <td><input type="text" field="*{name}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Surname</label></td>
+                                    <td><input type="text" field="*{surname}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Mail</label></td>
+                                    <td><input type="text" field="*{mail}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Study year</label></td>
+                                    <td><input type="text" field="*{study_year}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Study field</label></td>
+                                    <td><input type="text" field="*{study_field}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Index number</label></td>
+                                    <td><input type="text" field="*{index_number}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Password</label></td>
+                                    <td><input type="text" field="*{password}"/></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button onclick="AddStudent.cancelAddStudent()">Cancel</button>
+                            <button onclick="AddStudent.addStudent()">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-delete" class="modal">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <a id="deleteHeader">Header</a>
+                        </div>
+                        <div class="modal-body">
+                            <a id="deleteBody">Body</a>
+                        </div>
+                        <div class = "modal-footer">
+                            <div class="modal-button">
+                                <button onclick="DeleteStudent.cancelDelete()">Cancel</button>
+                                <button onclick="DeleteStudent.deleteStudent()">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

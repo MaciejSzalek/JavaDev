@@ -1,0 +1,39 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <title>Admin home</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="cssmenu">
+            <ul>
+                <li class ='active'><a href='/admin/home'>Home</a></li>
+                <li><a href='/admin/students'>Students</a></li>
+                <li><a href='/admin/lectures'>Lectures</a></li>
+                <li><a href='/admin/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#">Maciej Szałek</a></li>
+                        <div class="dropdown-content">
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="body">
+        <div class="title">
+            <p>WELCOME ADMIN HOME PAGE </p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>
