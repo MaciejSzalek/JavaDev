@@ -33,9 +33,8 @@
         <div class="title">
             <p>STUDENTS LIST </p>
         </div>
-        <div class="table">
-            <table>
-                <thead>
+            <table class="table">
+                <thead class="table-head">
                 <tr>
                     <th>Id</th>
                     <th>Student</th>
@@ -45,7 +44,7 @@
                     <th>Delete</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-body">
                 <tr th:each="student : ${studentList}">
                     <td th:text="${student.id}">Id</td>
                     <td th:text="${student.name} +' '+ ${student.surname}">Student</td>
@@ -53,8 +52,8 @@
                     <td th:text="${student.indexNumber}">Index</td>
                     <td><a th:href="@{/admin/students/edit/{id}(id=${student.id})}">Edit</a></td>
                     <td><a th:href="@{/admin/students/delete/{id}(id=${student.id})}">Delete</a></td>
-                    <td><button th:attr="onclick=|DeleteStudent
-                                        .showDelete('${student.id}', '${student.name}', '${student.surname}')|">
+                    <td><button th:attr="onclick=|DeleteStudent.showDelete
+                    ('${student.id}', '${student.name}', '${student.surname}')|">
                         Custom</button>
                     </td>
                 </tr>
@@ -62,7 +61,7 @@
                 <tfoot class="table-footer">
                 <tr>
                     <td></td><td></td><td></td><td></td><td></td>
-                    <td class="table-footer">
+                    <td>
                         <div class="addbtn">
                             <button th:attr="onclick=|AddStudent.showAdd()|">Add student</button>
                         </div>
@@ -71,53 +70,54 @@
                 </tfoot>
             </table>
 
-            <div id="modal-add" class="modal">
-                <div class="modal-container">
-                    <div class="modal-header">
-                        <a id="addHeader">Header</a>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <table>
-                                <tr>
-                                    <td><label>Name</label></td>
-                                    <td><input type="text" field="*{name}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Surname</label></td>
-                                    <td><input type="text" field="*{surname}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Mail</label></td>
-                                    <td><input type="text" field="*{mail}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Study year</label></td>
-                                    <td><input type="text" field="*{study_year}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Study field</label></td>
-                                    <td><input type="text" field="*{study_field}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Index number</label></td>
-                                    <td><input type="text" field="*{index_number}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Password</label></td>
-                                    <td><input type="text" field="*{password}"/></td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                    <div class = "modal-footer">
-                        <div class="modal-button">
-                            <button onclick="AddStudent.cancelAddStudent()">Cancel</button>
-                            <button onclick="AddStudent.addStudent()">Ok</button>
+            <form th:action="@{/admin/students/add}" th:object="${student}" method="post" id="add">
+                <div id="modal-add" class="modal">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <a id="addHeader">Header</a>
+                        </div>
+                        <div class="modal-body">
+                                <table>
+                                    <tr>
+                                        <td><label>Name</label></td>
+                                        <td><input type="text" th:field="*{name}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Surname</label></td>
+                                        <td><input type="text" th:field="*{surname}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Mail</label></td>
+                                        <td><input type="text" th:field="*{mail}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Study year</label></td>
+                                        <td><input type="text" th:field="*{studyYear}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Study field</label></td>
+                                        <td><input type="text" th:field="*{studyField}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Index number</label></td>
+                                        <td><input type="text" th:field="*{indexNumber}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Password</label></td>
+                                        <td><input type="text" th:field="*{password}"/></td>
+                                    </tr>
+                                </table>
+
+                        </div>
+                        <div class = "modal-footer">
+                            <div class="modal-button">
+                                <button type="reset" th:onclick="|AddStudent.cancelAddStudent()|">Cancel</button>
+                                <button type="submit" th:onclick="|AddStudent.addStudent()|">Ok</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div id="modal-delete" class="modal">
                     <div class="modal-container">
@@ -135,7 +135,6 @@
                         </div>
                     </div>
             </div>
-        </div>
     </div>
     <div class="footer">
         <p>JavaDev Academy @Copyright Maciej Szałek</p>

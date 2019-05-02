@@ -1,5 +1,10 @@
+function Test() {
+    var testMod = document.getElementById('modal-delete');
+    testMod.style.display='block';
+}
 
-const DeleteStudent = new function () {
+
+var DeleteStudent = new function () {
 
     var id;
     var name;
@@ -33,6 +38,7 @@ const AddStudent = new function () {
 
   const modalAdd = document.getElementById('modal-add');
   const addHeader = modalAdd.querySelector('#addHeader');
+  const add = document.getElementById('add');
   
   this.showAdd = function () {
       modalAdd.style.display = 'block';
@@ -40,7 +46,8 @@ const AddStudent = new function () {
   };
 
   this.addStudent = function () {
-      window.location = "/admin/students/add";
+      add.submit();
+      this.close()
   };
 
   this.cancelAddStudent = function () {

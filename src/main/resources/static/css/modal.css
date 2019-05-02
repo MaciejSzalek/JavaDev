@@ -15,21 +15,21 @@
 
     animation-name: zoom;
     animation-duration: 0.6s;
-
-    top: 30%;
-    left: 40%;
-    position: fixed;
-    width: 400px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
     background: #ffffff;
     border-radius: 10px;
     z-index: 2;
     padding: 10px;
-
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%)
 }
 
 @keyframes  zoom {
-    from{transform: scale(0)}
-    to{transform:scale(1)}
+    from{transform: translate(-50%, -50%) scale(0)}
+    to{transform: translate(-50%, -50%) scale(1)}
 }
 
 .modal-header{
@@ -41,11 +41,11 @@
 }
 .modal-body {
     padding: 10px;
-    line-height: 30px;
     background-color: white;
     color: #444444;
     text-align: left;
 }
+
 .modal-footer{
     padding: 10px;
     background-color: white;

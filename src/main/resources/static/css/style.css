@@ -39,42 +39,41 @@ body {
 .table {
     font-family: Raleway, sans-serif;
 }
-.table > table {
+.table {
     border-collapse: collapse;
-    padding: 10px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-}
-th {
-    font-weight: bold;
-    background-color: #47c9af;
-    padding: 15px;
-    color: #ffffff;
-}
-tr:hover{
-    background-color: lightgray;
-}
-td{
-    border-bottom: 1px solid grey;
-    text-align: center;
-    padding: 15px;
-    color: #444444
-}
-.table-footer > tfoot {
-    border-collapse: collapse;
-    border: none;
     padding: 10px;
 }
-.table-footer > tr {
-    border: none;
-    background-color: white;
+.table,th,td {
+    padding: 10px;
 }
-.table-footer > tr:hover {
-    background-color: white;
+.table-head {
+    font-weight: normal;
+    background-color: #47c9af;
+    color: white;
 }
-.table-footer > td {
+
+.table-body {
+    text-align: center;
+    background-color: white;
+    color: #444444;
+}
+.table-body > td {
+    padding: 10px;
+}
+.table-body > tr {
+    border-bottom: 1px solid grey;
+}
+
+.table-body > tr:hover{
+    background-color: lightgray;
+}
+
+.table-footer {
     border: none;
+    padding: 0;
 }
 
 .addbtn > button {
