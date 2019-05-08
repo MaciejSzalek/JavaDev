@@ -35,8 +35,8 @@ public class AdminController {
     public ModelAndView addPage(){
 
         Student student = new Student();
-        student.setName("Jan");
-        student.setSurname("Kowalski");
+        student.setFirstName("Jan");
+        student.setLastName("Kowalski");
         student.setMail("jankowalski@mail.com");
         student.setStudyYear("2");
         student.setStudyField("mechanika");
@@ -65,6 +65,12 @@ public class AdminController {
 
     @RequestMapping("/admin/students/add")
     public ModelAndView addStudent(@ModelAttribute Student student){
+        studentRepository.save(student);
+        return new ModelAndView("redirect:/admin/students");
+    }
+    @RequestMapping("/admin/students/update/{id}")
+    public ModelAndView updateStudent(@ModelAttribute Student student){
+        student.setId(student.getId());
         studentRepository.save(student);
         return new ModelAndView("redirect:/admin/students");
     }

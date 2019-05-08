@@ -11,22 +11,22 @@ public class Student {
     @Column (name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column (name = "name")
-    private String name;
+    @Column (name = "firstName")
+    private String firstName;
 
-    @Column (name = "surname")
-    private String surname;
+    @Column (name = "lastName")
+    private String lastName;
 
     @Column (name = "mail")
     private String mail;
 
-    @Column (name = "study_year")
+    @Column (name = "studyYear")
     private String studyYear;
 
-    @Column (name = "study_field")
+    @Column (name = "studyField")
     private String studyField;
 
-    @Column (name = "index_number")
+    @Column (name = "indexNumber")
     private String indexNumber;
 
     @Column (name = "password")
@@ -36,12 +36,12 @@ public class Student {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getMail() {
@@ -68,12 +68,12 @@ public class Student {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setMail(String mail) {

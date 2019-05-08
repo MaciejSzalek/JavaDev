@@ -16,8 +16,7 @@
     animation-name: zoom;
     animation-duration: 0.6s;
     position: absolute;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     background: #ffffff;
     border-radius: 10px;
     z-index: 2;
@@ -46,15 +45,30 @@
     text-align: left;
 }
 
+.modal-input, input, select {
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 8px 16px;
+    display: inline-block;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.modal-input, select:invalid {
+    color: gray;
+    background-color: white;
+}
+
 .modal-footer{
     padding: 10px;
     background-color: white;
     line-height: 20px;
 }
 .modal-button > button {
-    float: right;
     padding: 10px 24px;
     margin-left: 10px;
+    float: right;
     background-color: #47c9af;
     color: white;
     text-align: center;
@@ -66,6 +80,7 @@
 }
 
 .modal-button > button:hover {
+    cursor: pointer;
     background-color: white;
     color: #444444;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);

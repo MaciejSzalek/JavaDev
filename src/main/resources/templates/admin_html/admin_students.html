@@ -3,9 +3,8 @@
     <meta charset="UTF-8" />
     <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
-    <link href="../static/css/dialogs.css" th:href="@{/css/dialogs.css}" rel="stylesheet" />
     <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
-    <script type="text/javascript" th:src="@{/js/dialogs.js}" defer></script>
+    <script type="text/javascript" th:src="@{/js/student.js}" defer></script>
     <title>Students</title>
 </head>
 
@@ -47,17 +46,32 @@
                 <tbody class="table-body">
                 <tr th:each="student : ${studentList}">
                     <td th:text="${student.id}">Id</td>
-                    <td th:text="${student.name} +' '+ ${student.surname}">Student</td>
+                    <td th:text="${student.firstName} +' '+ ${student.lastName}">Student</td>
                     <td th:text="${student.mail}">E-mail</td>
                     <td th:text="${student.indexNumber}">Index</td>
-                    <td><a th:href="@{/admin/students/edit/{id}(id=${student.id})}">Edit</a></td>
-                    <td><a th:href="@{/admin/students/delete/{id}(id=${student.id})}">Delete</a></td>
-                    <td><button th:attr="onclick=|DeleteStudent.showDelete
-                    ('${student.id}', '${student.name}', '${student.surname}')|">
-                        Custom</button>
+                    <td class="modal-button">
+                        <button th:attr="onclick=|EditStudent.showEdit(
+                        '${student.id}',
+                        '${student.firstName}',
+                        '${student.lastName}',
+                        '${student.mail}',
+                        '${student.indexNumber}',
+                        '${student.studyField}',
+                        '${student.studyYear}',
+                        '${student.password}')|">
+                            Edit</button>
+                    </td>
+                    <td class="modal-button">
+                        <button th:attr="onclick=|DeleteStudent.showDelete(
+                        '${student.id}',
+                        '${student.firstName}',
+                        '${student.lastName}')|">
+                            Delete</button>
                     </td>
                 </tr>
                 </tbody>
+            </table>
+            <table class="table">
                 <tfoot class="table-footer">
                 <tr>
                     <td></td><td></td><td></td><td></td><td></td>
@@ -77,47 +91,103 @@
                             <a id="addHeader">Header</a>
                         </div>
                         <div class="modal-body">
-                                <table>
-                                    <tr>
-                                        <td><label>Name</label></td>
-                                        <td><input type="text" th:field="*{name}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Surname</label></td>
-                                        <td><input type="text" th:field="*{surname}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Mail</label></td>
-                                        <td><input type="text" th:field="*{mail}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Study year</label></td>
-                                        <td><input type="text" th:field="*{studyYear}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Study field</label></td>
-                                        <td><input type="text" th:field="*{studyField}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Index number</label></td>
-                                        <td><input type="text" th:field="*{indexNumber}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Password</label></td>
-                                        <td><input type="text" th:field="*{password}"/></td>
-                                    </tr>
-                                </table>
+                            <div>
+                                <label>First Name</label>
+                                <input required="required" type="text" placeholder="first name..." th:field="*{firstName}"/>
 
+                                <label>Last Name</label>
+                                <input required="required" type="text" placeholder="last name..." th:field="*{lastName}"/>
+
+                                <label>Mail</label>
+                                <input required="required" type="text" placeholder="mail..." th:field="*{mail}"/>
+
+                                <label>Index number</label>
+                                <input required="required" type="text" placeholder="index number..." th:field="*{indexNumber}"/>
+
+                                <label>Study field</label>
+                                <input required="required" type="text" placeholder="study field..." th:field="*{studyField}"/>
+
+                                <label>Study year</label>
+                                <select required="required" id="year" th:field="*{studyYear}">
+                                    <option selected="selected" value="">select study year..</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+
+                                <label>Password</label>
+                                <input required="required" id="password" type="text"
+                                       placeholder="password..." th:field="*{password}"/>
+
+                                <label>Confirm password</label>
+                                <input required="required" id="confirmPassword" type="text"
+                                       placeholder="confirm password..."/>
+                            </div>
                         </div>
                         <div class = "modal-footer">
                             <div class="modal-button">
                                 <button type="reset" th:onclick="|AddStudent.cancelAddStudent()|">Cancel</button>
-                                <button type="submit" th:onclick="|AddStudent.addStudent()|">Ok</button>
+                                <button type="submit" th:onclick="|return AddStudent.passwordValidate()|">Ok</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+        <form th:action="@{#}" id="editForm" th:object="${student}" method="post">
+            <div id="modal-edit" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="editHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label>Id</label>
+                            <input id="editId" required="required" type="text" th:field="*{id}"/>
+                            <label>First Name</label>
+                            <input id="editFirstName" required="required" type="text" th:field="*{firstName}"/>
+
+                            <label>Last Name</label>
+                            <input id="editLastName" required="required" type="text" th:field="*{lastName}"/>
+
+                            <label>Mail</label>
+                            <input id="editMail" required="required" type="text" th:field="*{mail}"/>
+
+                            <label>Index number</label>
+                            <input id="editIndexNumber" required="required" type="text" th:field="*{indexNumber}"/>
+
+                            <label>Study field</label>
+                            <input id="editStudyField" required="required" type="text" th:field="*{studyField}"/>
+
+                            <label>Study year</label>
+                            <select id="editStudyYear" required="required" th:field="*{studyYear}">
+                                <option selected="selected" value="">select study year..</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+
+                            <label>Password</label>
+                            <input id="editPassword" required="required" type="text"
+                                   th:field="*{password}"/>
+
+                            <label>Confirm password</label>
+                            <input required="required" id="confirmEditPassword" type="text"/>
+                        </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|EditStudent.cancelEdit()|">Cancel</button>
+                            <button type="submit" th:onclick="|return EditStudent.passwordValidate()|">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
             <div id="modal-delete" class="modal">
                     <div class="modal-container">
