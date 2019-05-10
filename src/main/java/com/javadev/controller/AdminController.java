@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
+@RequestMapping("/admin")
 public class AdminController {
 
     private final StudentRepository studentRepository;
@@ -21,34 +22,17 @@ public class AdminController {
         this.studentRepository = studentRepository;
     }
 
-    @RequestMapping("/admin/home")
-    public ModelAndView homePage(){
-        return new ModelAndView("admin_html/admin_home");
-    }
-
     @RequestMapping("/logout")
     public ModelAndView logoutPage(){
         return new ModelAndView("redirect:/");
     }
 
-    @RequestMapping("/admin/add")
-    public ModelAndView addPage(){
-
-        Student student = new Student();
-        student.setFirstName("Jan");
-        student.setLastName("Kowalski");
-        student.setMail("jankowalski@mail.com");
-        student.setStudyYear("2");
-        student.setStudyField("mechanika");
-        student.setIndexNumber("1234567");
-        student.setPassword("StuPassword");
-
-        studentRepository.save(student);
-
-        return new ModelAndView("redirect:/admin/students");
+    @GetMapping("/home")
+    public ModelAndView homePage(){
+        return new ModelAndView("admin_html/admin_home");
     }
 
-    @RequestMapping("/admin/students")
+    @GetMapping("/students")
     public ModelAndView studentsPage(@ModelAttribute Student student){
 
         ModelAndView modelAndView = new ModelAndView();
@@ -63,22 +47,21 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping("/admin/students/add")
+    @PostMapping("/students/add")
     public ModelAndView addStudent(@ModelAttribute Student student){
         studentRepository.save(student);
         return new ModelAndView("redirect:/admin/students");
     }
-    @RequestMapping("/admin/students/update/{id}")
+    @PutMapping("/students/{id}/update")
     public ModelAndView updateStudent(@ModelAttribute Student student){
         student.setId(student.getId());
         studentRepository.save(student);
         return new ModelAndView("redirect:/admin/students");
     }
 
-    @RequestMapping("/admin/students/delete/{id}")
+    @DeleteMapping("/students/{id}/delete")
     public ModelAndView deleteStudent(@ModelAttribute Student student){
         studentRepository.deleteById(student.getId());
         return new ModelAndView("redirect:/admin/students");
     }
-
 }

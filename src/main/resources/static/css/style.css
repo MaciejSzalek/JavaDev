@@ -44,10 +44,10 @@ body {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px;
+    padding: 5px;
 }
 .table,th,td {
-    padding: 10px;
+    padding: 5px;
 }
 .table-head {
     font-weight: normal;
@@ -61,7 +61,7 @@ body {
     color: #444444;
 }
 .table-body > td {
-    padding: 10px;
+    padding: 5px;
 }
 .table-body > tr {
     border-bottom: 1px solid grey;
@@ -98,5 +98,58 @@ body {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 .addbtn > button:focus {
+    outline: none;
+}
+.search-input {
+    float: right;
+    width: 25%;
+    margin-bottom: 12px;
+}
+.search-input > input {
+    background: url('../png/searchIcon.png') no-repeat right 10px center;
+    padding: 10px 40px 10px 10px;
+    font-size: 16px;
+    color: #444444;
+}
+.search-input > input::placeholder {
+    color: grey;
+}
+.search-input > input:focus {
+    outline: none;
+}
+.crud-btn,
+.crud-btn > button {
+    height: 40px;
+    width: 40px;
+    border-radius: 4px;
+    border: none;
+}
+.crud-btn > button:hover {
+    cursor: pointer;
+    background-color: #47c9af;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.crud-btn > button:focus {
+    outline: none;
+}
+.details-btn{
+    background: url('../png/detailsIcon.png') no-repeat center;
+}
+.edit-btn{
+    background: url('../png/editIcon.png') no-repeat center;
+}
+.delete-btn > button {
+    height: 40px;
+    width: 40px;
+    border-radius: 4px;
+    border: none;
+    background: url('../png/deleteIcon.png') no-repeat center;
+}
+.delete-btn > button:hover {
+    cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: red;
+}
+.delete-btn > button:focus {
     outline: none;
 }

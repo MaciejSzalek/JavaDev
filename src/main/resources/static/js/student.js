@@ -24,6 +24,57 @@ const AddStudent = new function () {
         }
     };
 };
+const DetailsStudent = new function () {
+
+    var id,
+        firstName,
+        lastName,
+        mail,
+        indexNumber,
+        studyField,
+        studyYear,
+        password;
+
+    const modalDetails = document.getElementById('modal-details');
+    const detailsHeader = modalDetails.querySelector('#detailsHeader');
+    const detailsId = document.getElementById('detailsId');
+    const detailsFirstName = document.getElementById('detailsFirstName');
+    const detailsLastName = document.getElementById('detailsLastName');
+    const detailsMail = document.getElementById('detailsMail');
+    const detailsIndexNumber = document.getElementById('detailsIndexNumber');
+    const detailsStudyField = document.getElementById('detailsStudyField');
+    const detailsStudyYear = document.getElementById('detailsStudyYear');
+    const detailsPassword = document.getElementById('detailsPassword');
+
+    this.showDetails = function (tId, tFirstName, tLastName, tMail,
+                              tIndexNumber, tStudyField, tStudyYear, tPassword) {
+
+        id = tId;
+        firstName = tFirstName;
+        lastName = tLastName;
+        mail = tMail;
+        indexNumber = tIndexNumber;
+        studyField = tStudyField;
+        studyYear = tStudyYear;
+        password = tPassword;
+
+        modalDetails.style.display = 'block';
+        detailsHeader.textContent = 'Student Details';
+        detailsId.textContent = id;
+        detailsFirstName.textContent = firstName;
+        detailsLastName.textContent = lastName;
+        detailsMail.textContent = mail;
+        detailsIndexNumber.textContent = indexNumber;
+        detailsStudyField.textContent = studyField;
+        detailsStudyYear.textContent = studyYear;
+        detailsPassword.textContent = password;
+    };
+
+    this.hideDetails = function () {
+        modalDetails.style.display = 'none';
+        this.close();
+    };
+};
 
 const EditStudent = new function () {
     var id,
@@ -83,7 +134,7 @@ const EditStudent = new function () {
             confirmPassword.placeholder = "Confirm password don't match";
             return false;
         }else{
-            var url = "/admin/students/update/" + id;
+            var url = "/admin/students/" + id + "/update";
             document.getElementById('editForm').setAttribute('action', url);
             return true;
         }
@@ -109,9 +160,8 @@ const DeleteStudent = new function () {
     };
 
     this.deleteStudent = function () {
-        var url = "/admin/students/delete/";
-        url = url + id;
-        window.location = url;
+        var url = "/admin/students/" + id + "/delete";
+        document.getElementById('deleteForm').setAttribute('action', url);
     };
 
     this.cancelDelete = function () {
@@ -119,3 +169,23 @@ const DeleteStudent = new function () {
         this.close();
     }
 };
+
+function searchFunction(){
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("studentTable");
+    tr = table.getElementsByTagName("tr");
+
+    for(i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if(td) {
+            txtValue = td.textContent || td.innerText;
+            if(txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}

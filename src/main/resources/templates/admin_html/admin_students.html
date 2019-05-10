@@ -32,13 +32,17 @@
         <div class="title">
             <p>STUDENTS LIST </p>
         </div>
-            <table class="table">
+        <div class="search-input">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search student..">
+        </div>
+            <table id="studentTable" class="table">
                 <thead class="table-head">
                 <tr>
                     <th>Id</th>
                     <th>Student</th>
-                    <th>E-mail</th>
                     <th>Index</th>
+                    <th>E-mail</th>
+                    <th>Details</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -47,26 +51,38 @@
                 <tr th:each="student : ${studentList}">
                     <td th:text="${student.id}">Id</td>
                     <td th:text="${student.firstName} +' '+ ${student.lastName}">Student</td>
-                    <td th:text="${student.mail}">E-mail</td>
                     <td th:text="${student.indexNumber}">Index</td>
-                    <td class="modal-button">
-                        <button th:attr="onclick=|EditStudent.showEdit(
-                        '${student.id}',
-                        '${student.firstName}',
-                        '${student.lastName}',
-                        '${student.mail}',
-                        '${student.indexNumber}',
-                        '${student.studyField}',
-                        '${student.studyYear}',
-                        '${student.password}')|">
-                            Edit</button>
+                    <td th:text="${student.mail}">E-mail</td>
+                    <td class="crud-btn">
+                        <button class="details-btn" th:attr="onclick=|DetailsStudent.showDetails(
+                            '${student.id}',
+                            '${student.firstName}',
+                            '${student.lastName}',
+                            '${student.mail}',
+                            '${student.indexNumber}',
+                            '${student.studyField}',
+                            '${student.studyYear}',
+                            '${student.password}')|">
+                        </button>
                     </td>
-                    <td class="modal-button">
+                    <td class="crud-btn">
+                        <button class="edit-btn" th:attr="onclick=|EditStudent.showEdit(
+                            '${student.id}',
+                            '${student.firstName}',
+                            '${student.lastName}',
+                            '${student.mail}',
+                            '${student.indexNumber}',
+                            '${student.studyField}',
+                            '${student.studyYear}',
+                            '${student.password}')|">
+                         </button>
+                    </td>
+                    <td class="delete-btn">
                         <button th:attr="onclick=|DeleteStudent.showDelete(
-                        '${student.id}',
-                        '${student.firstName}',
-                        '${student.lastName}')|">
-                            Delete</button>
+                            '${student.id}',
+                            '${student.firstName}',
+                            '${student.lastName}')|">
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -84,7 +100,7 @@
                 </tfoot>
             </table>
 
-            <form th:action="@{/admin/students/add}" th:object="${student}" method="post" id="add">
+            <form th:action="@{/admin/students/add}" th:object="${student}" th:method="post" id="add">
                 <div id="modal-add" class="modal">
                     <div class="modal-container">
                         <div class="modal-header">
@@ -135,8 +151,7 @@
                     </div>
                 </div>
             </form>
-
-        <form th:action="@{#}" id="editForm" th:object="${student}" method="post">
+        <form th:action="@{#}" id="editForm" th:object="${student}" th:method="put">
             <div id="modal-edit" class="modal">
                 <div class="modal-container">
                     <div class="modal-header">
@@ -187,24 +202,78 @@
                     </div>
                 </div>
             </div>
-        </form>
 
+        </form>
+        <form th:action="@{#}" id="deleteForm" th:method="delete">
             <div id="modal-delete" class="modal">
-                    <div class="modal-container">
-                        <div class="modal-header">
-                            <a id="deleteHeader">Header</a>
-                        </div>
-                        <div class="modal-body">
-                            <a id="deleteBody">Body</a>
-                        </div>
-                        <div class = "modal-footer">
-                            <div class="modal-button">
-                                <button onclick="DeleteStudent.cancelDelete()">Cancel</button>
-                                <button onclick="DeleteStudent.deleteStudent()">Ok</button>
-                            </div>
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="deleteHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <a id="deleteBody">Body</a>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|DeleteStudent.cancelDelete()|">Cancel</button>
+                            <button th:onclick="|DeleteStudent.deleteStudent()|">Ok</button>
                         </div>
                     </div>
+                </div>
             </div>
+        </form>
+
+        <form id="detailsForm" th:object="${student}" th:method="get">
+            <div id="modal-details" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="detailsHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <td style="text-align: right">Id: </td>
+                                <td id="detailsId" style="text-align: left"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">First name: </td>
+                                <td id="detailsFirstName" style="text-align: left">firstName</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Last name: </td>
+                                <td id="detailsLastName" style="text-align: left">lastName</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">E-mail: </td>
+                                <td style="text-align: left"><a id="detailsMail">mail</a></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Index number: </td>
+                                <td id="detailsIndexNumber" style="text-align: left">indexNumber</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">studyField: </td>
+                                <td id="detailsStudyField">Study Field</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Study year: </td>
+                                <td id="detailsStudyYear" style="text-align: left">studyYear</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Password: </td>
+                                <td id="detailsPassword" style="text-align: left">password</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|DetailsStudent.hideDetails()|">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
     <div class="footer">
         <p>JavaDev Academy @Copyright Maciej Szałek</p>
