@@ -1,0 +1,222 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/lecture.js}" defer></script>
+    <title>Lectures</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="cssmenu">
+            <ul>
+                <li><a href='/admin/home'>Home</a></li>
+                <li><a href='/admin/students'>Students</a></li>
+                <li class ='active'><a href='/admin/lectures'>Lectures</a></li>
+                <li><a href='/admin/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#">Maciej Szałek</a></li>
+                        <div class="dropdown-content">
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="title">
+            <p>LECTURES LIST</p>
+        </div>
+        <div class="search-input">
+            <input type="text" id="searchLectureInput" onkeyup="searchLectureFunction()" placeholder="Search lecture..">
+        </div>
+        <table id="lectureTable" class="table">
+            <thead class="table-head">
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Lecturer</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+            <tr th:each="lecture : ${lectureList}">
+                <td th:text="${lecture.date}">Date</td>
+                <td th:text="${lecture.title}">Title</td>
+                <td th:text="${lecture.lecturer}">Lecturer</td>
+                <td class="crud-btn">
+                    <button class="details-btn" th:attr="onclick=|DetailsLecture.showDetails(
+                            '${lecture.id}',
+                            '${lecture.date}',
+                            '${lecture.title}',
+                            '${lecture.description}',
+                            '${lecture.lecturer}')|">
+                    </button>
+                </td>
+                <td class="crud-btn">
+                    <button class="edit-btn" th:attr="onclick=|EditLecture.showEdit(
+                            '${lecture.id}',
+                            '${lecture.date}',
+                            '${lecture.title}',
+                            '${lecture.description}',
+                            '${lecture.lecturer}')|">
+                    </button>
+                </td>
+                <td class="delete-btn">
+                    <button th:attr="onclick=|DeleteLecture.showLectureDelete('${lecture.id}', '${lecture.title}')|">
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <tfoot class="table-footer">
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td>
+                <td>
+                    <div class="addbtn">
+                        <button th:attr="onclick=|AddLecture.showAdd()|">Add lecture</button>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <form th:action="@{/admin/lectures/add}" th:object="${lecture}" th:method="post" id="add">
+            <div id="add-lecture" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="addLectureHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label>Date</label>
+                            <input required="required" type="text" placeholder="date.." th:field="*{date}"/>
+
+                            <label>Title</label>
+                            <input required="required" type="text" placeholder="title.." th:field="*{title}"/>
+
+                            <label>Lecturer</label>
+                            <input required="required" type="text" placeholder="lecturer.." th:field="*{lecturer}"/>
+
+                            <label>Description</label>
+                            <input required="required" type="text" placeholder="description.." th:field="*{description}"/>
+
+                        </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|AddLecture.cancelAddLecture()|">Cancel</button>
+                            <button type="submit" th:onclick="|return AddLecture.confirmAddLecture()|">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form th:action="@{#}" id="editLectureForm" th:object="${lecture}" th:method="put">
+            <div id="edit-lecture" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="editLectureHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label>Id</label>
+                            <input id="editLectureId" required="required" type="text" th:field="*{id}"/>
+
+                            <label>Date</label>
+                            <input id="editLectureDate" required="required" type="text" th:field="*{date}"/>
+
+                            <label>Title</label>
+                            <input id="editLectureTitle" required="required" type="text" th:field="*{title}"/>
+
+                            <label>Lecturer</label>
+                            <input id="editLectureLecturer" required="required" type="text" th:field="*{lecturer}"/>
+
+                            <label>Description</label>
+                            <input id="editLectureDescription" required="required" type="text" th:field="*{description}"/>
+
+                        </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|EditLecture.cancelEdit()|">Cancel</button>
+                            <button type="submit" th:onclick="|return EditLecture.confirmEditLecture()|">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <form th:action="@{#}" id="deleteLectureForm" th:method="delete">
+            <div id="delete-lecture" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="deleteLectureHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <a id="deleteLectureBody">Body</a>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|DeleteLecture.cancelDeleteLecture()|">Cancel</button>
+                            <button th:onclick="|DeleteLecture.deleteLecture()|">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form id="detailsLectureForm" th:object="${lecture}" th:method="get">
+            <div id="lecture-details" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a id="detailsLectureHeader">Header</a>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <td style="text-align: right">Id: </td>
+                                <td id="detailsLectureId" style="text-align: left"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Date: </td>
+                                <td id="detailsLectureDate" style="text-align: left">date</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Title: </td>
+                                <td id="detailsLectureTitle" style="text-align: left">title</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Lecturer: </td>
+                                <td id="detailsLectureLecturer" style="text-align: left">lecturer</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">Description: </td>
+                                <td id="detailsLectureDescription" style="text-align: left">description</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|DetailsLecture.hideDetails()|">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

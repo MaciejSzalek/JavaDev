@@ -1,9 +1,10 @@
 package com.javadev.controller;
 
+import com.javadev.model.Lecture;
 import com.javadev.model.Student;
+import com.javadev.repository.LectureRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,10 +17,12 @@ import java.util.Map;
 public class AdminController {
 
     private final StudentRepository studentRepository;
+    private final LectureRepository lectureRepository;
 
     @Autowired
-    public AdminController(StudentRepository studentRepository){
+    public AdminController(StudentRepository studentRepository, LectureRepository lectureRepository){
         this.studentRepository = studentRepository;
+        this.lectureRepository = lectureRepository;
     }
 
     @RequestMapping("/logout")
@@ -63,5 +66,38 @@ public class AdminController {
     public ModelAndView deleteStudent(@ModelAttribute Student student){
         studentRepository.deleteById(student.getId());
         return new ModelAndView("redirect:/admin/students");
+    }
+
+    @GetMapping("/lectures")
+    public ModelAndView lecturesPage(@ModelAttribute Lecture lecture){
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<Lecture> lectureList = (List<Lecture>) lectureRepository.findAll();
+        Map<String, Object> params = new HashMap<>();
+        params.put("lectureList", lectureList);
+
+        modelAndView.addAllObjects(params);
+        modelAndView.setViewName("admin_html/admin_lectures");
+
+        return modelAndView;
+    }
+
+    @PostMapping("/lectures/add")
+    public ModelAndView addStudent(@ModelAttribute Lecture lecture){
+        lectureRepository.save(lecture);
+        return new ModelAndView("redirect:/admin/lectures");
+    }
+    @PutMapping("/lectures/{id}/update")
+    public ModelAndView updateStudent(@ModelAttribute Lecture lecture){
+        lecture.setId(lecture.getId());
+        lectureRepository.save(lecture);
+        return new ModelAndView("redirect:/admin/lectures");
+    }
+
+    @DeleteMapping("/lectures/{id}/delete")
+    public ModelAndView deleteStudent(@ModelAttribute Lecture lecture){
+        lectureRepository.deleteById(lecture.getId());
+        return new ModelAndView("redirect:/admin/lectures");
     }
 }
