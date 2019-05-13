@@ -1,6 +1,8 @@
 package com.javadev.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name = "student_table")
@@ -8,7 +10,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
-    @Column (name = "id", updatable = false, nullable = false)
+    @Column (name = "student_id", updatable = false, nullable = false)
     private Long id;
 
     @Column (name = "firstName")
@@ -31,6 +33,21 @@ public class Student {
 
     @Column (name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<Attendance> attendance = new HashSet<>();
+
+    public Set<Attendance> getAttendance(){
+        return attendance;
+    }
+
+    public void setAttendance(Set<Attendance> attendance) {
+        this.attendance = attendance;
+    }
+
+    public void addAttendance(Attendance attendance) {
+        this.attendance.add(attendance);
+    }
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.javadev.controller;
 
+import com.javadev.model.Attendance;
 import com.javadev.model.Lecture;
 import com.javadev.model.Student;
 import com.javadev.repository.LectureRepository;
@@ -18,6 +19,7 @@ public class AdminController {
 
     private final StudentRepository studentRepository;
     private final LectureRepository lectureRepository;
+    private Attendance attendance;
 
     @Autowired
     public AdminController(StudentRepository studentRepository, LectureRepository lectureRepository){
@@ -85,6 +87,16 @@ public class AdminController {
 
     @PostMapping("/lectures/add")
     public ModelAndView addStudent(@ModelAttribute Lecture lecture){
+        List<Student> studentList = (List<Student>) studentRepository.findAll();
+        if(studentList.size() != 0){
+            for(Student s: studentList){
+                attendance = new Attendance();
+                attendance.setLecture(lecture);
+                attendance.setStudent(s);
+                attendance.setAttendanceStatus(false);
+                lecture.addAttendance(attendance);
+            }
+        }
         lectureRepository.save(lecture);
         return new ModelAndView("redirect:/admin/lectures");
     }
@@ -99,5 +111,10 @@ public class AdminController {
     public ModelAndView deleteStudent(@ModelAttribute Lecture lecture){
         lectureRepository.deleteById(lecture.getId());
         return new ModelAndView("redirect:/admin/lectures");
+    }
+
+    @PostMapping("/test")
+    public ModelAndView test(@ModelAttribute Student student,@ModelAttribute Lecture lecture){
+        return new ModelAndView("redirect:/admin/students");
     }
 }
