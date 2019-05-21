@@ -1,5 +1,8 @@
 package com.javadev.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -19,7 +22,7 @@ public class Attendance implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
@@ -31,7 +34,7 @@ public class Attendance implements Serializable {
         this.student = student;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
@@ -52,5 +55,9 @@ public class Attendance implements Serializable {
 
     public void setAttendanceStatus(Boolean attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
+    }
+
+    public void deleteAttendanceByStudentId(Long id){
+
     }
 }

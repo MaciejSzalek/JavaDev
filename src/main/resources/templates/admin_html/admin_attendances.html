@@ -1,0 +1,76 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/attendance.js}" defer></script>
+    <title>Attendances</title>
+</head>
+
+<body onload="checkStudentAttendance()">
+<div class="container">
+    <div class="header">
+        <div class="cssmenu">
+            <ul>
+                <li><a href='/admin/home'>Home</a></li>
+                <li><a href='/admin/students'>Students</a></li>
+                <li><a href='/admin/lectures'>Lectures</a></li>
+                <li class ='active'><a href='/admin/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#">Maciej Szałek</a></li>
+                        <div class="dropdown-content">
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="title">
+            <p>Student Attendance List</p>
+            <p id="test"></p>
+            <p id="tr"></p>
+            <p id="td"></p>
+            <div hidden id="attendanceCompareList">
+                <table id="compareTab">
+                    <tr th:each="attendance : ${attendanceList}">
+                        <td th:value="${attendance.lecture.getId()} +''+ ${attendance.student.getId()}"
+                            th:text="${attendance.lecture.getId()} +''+ ${attendance.student.getId()}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="search-input">
+            <input type="text" id="searchAttendanceInput" onkeyup="searchAttendanceFunction()" placeholder="Search student..">
+        </div>
+        <table id="attendanceTable" class="table">
+            <thead class="table-head">
+            <tr>
+                <th>Student</th>
+                <th th:each="lecture : ${lectureList}" th:text="${lecture.date}"></th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+                <tr th:each="student : ${studentList}">
+                    <td th:text="${student.firstName} +' '+ ${student.lastName}">student</td>
+                    <td class="attendance-btn" id="attendanceTd" th:each="lecture : ${lectureList}">
+                        <button id="buttonId" th:text="${lecture.id} +''+ ${student.id}"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <tfoot class="table-footer">
+
+            </tfoot>
+        </table>
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

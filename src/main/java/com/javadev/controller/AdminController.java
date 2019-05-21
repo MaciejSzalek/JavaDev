@@ -3,12 +3,14 @@ package com.javadev.controller;
 import com.javadev.model.Attendance;
 import com.javadev.model.Lecture;
 import com.javadev.model.Student;
+import com.javadev.repository.AttendanceRepository;
 import com.javadev.repository.LectureRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +21,16 @@ public class AdminController {
 
     private final StudentRepository studentRepository;
     private final LectureRepository lectureRepository;
+    private final AttendanceRepository attendanceRepository;
     private Attendance attendance;
 
     @Autowired
-    public AdminController(StudentRepository studentRepository, LectureRepository lectureRepository){
+    public AdminController(StudentRepository studentRepository,
+                           LectureRepository lectureRepository,
+                           AttendanceRepository attendanceRepository){
         this.studentRepository = studentRepository;
         this.lectureRepository = lectureRepository;
+        this.attendanceRepository = attendanceRepository;
     }
 
     @RequestMapping("/logout")
@@ -43,6 +49,7 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
 
         List<Student> studentList = (List<Student>) studentRepository.findAll();
+        studentList.sort(Comparator.comparing(Student::getLastName));
         Map<String, Object> params = new HashMap<>();
         params.put("studentList", studentList);
 
@@ -76,45 +83,61 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
 
         List<Lecture> lectureList = (List<Lecture>) lectureRepository.findAll();
-        Map<String, Object> params = new HashMap<>();
-        params.put("lectureList", lectureList);
+        lectureList.sort(Comparator.comparing(Lecture::getDate));
+        Map<String, Object> lectureParams = new HashMap<>();
+        lectureParams.put("lectureList", lectureList);
 
-        modelAndView.addAllObjects(params);
+        modelAndView.addAllObjects(lectureParams);
         modelAndView.setViewName("admin_html/admin_lectures");
 
         return modelAndView;
     }
 
     @PostMapping("/lectures/add")
-    public ModelAndView addStudent(@ModelAttribute Lecture lecture){
-        List<Student> studentList = (List<Student>) studentRepository.findAll();
-        if(studentList.size() != 0){
-            for(Student s: studentList){
-                attendance = new Attendance();
-                attendance.setLecture(lecture);
-                attendance.setStudent(s);
-                attendance.setAttendanceStatus(false);
-                lecture.addAttendance(attendance);
-            }
-        }
+    public ModelAndView addLecture(@ModelAttribute Lecture lecture){
         lectureRepository.save(lecture);
         return new ModelAndView("redirect:/admin/lectures");
     }
     @PutMapping("/lectures/{id}/update")
-    public ModelAndView updateStudent(@ModelAttribute Lecture lecture){
+    public ModelAndView updateLecture(@ModelAttribute Lecture lecture){
         lecture.setId(lecture.getId());
         lectureRepository.save(lecture);
         return new ModelAndView("redirect:/admin/lectures");
     }
 
     @DeleteMapping("/lectures/{id}/delete")
-    public ModelAndView deleteStudent(@ModelAttribute Lecture lecture){
+    public ModelAndView deleteLecture(@ModelAttribute Lecture lecture){
         lectureRepository.deleteById(lecture.getId());
         return new ModelAndView("redirect:/admin/lectures");
     }
 
-    @PostMapping("/test")
-    public ModelAndView test(@ModelAttribute Student student,@ModelAttribute Lecture lecture){
-        return new ModelAndView("redirect:/admin/students");
+    @GetMapping("/attendances")
+    public ModelAndView attendancePage(@ModelAttribute Lecture lecture,
+                                       @ModelAttribute Student student,
+                                       @ModelAttribute Attendance attendance){
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<Lecture> lectureList = (List<Lecture>) lectureRepository.findAll();
+        lectureList.sort(Comparator.comparing(Lecture::getDate));
+
+        Map<String, Object> lectureParams = new HashMap<>();
+        lectureParams.put("lectureList", lectureList);
+
+        List<Student> studentList = (List<Student>) studentRepository.findAll();
+        studentList.sort(Comparator.comparing(Student::getLastName));
+        Map<String, Object> studentParams = new HashMap<>();
+        studentParams.put("studentList", studentList);
+
+        List<Attendance> attendanceList = (List<Attendance>) attendanceRepository.findAll();
+        Map<String, Object> attendanceParams = new HashMap<>();
+        attendanceParams.put("attendanceList", attendanceList);
+
+        modelAndView.addAllObjects(lectureParams);
+        modelAndView.addAllObjects(studentParams);
+        modelAndView.addAllObjects(attendanceParams);
+        modelAndView.setViewName("admin_html/admin_attendances");
+
+        return modelAndView;
     }
 }
