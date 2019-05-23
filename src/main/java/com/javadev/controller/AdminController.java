@@ -7,13 +7,11 @@ import com.javadev.repository.AttendanceRepository;
 import com.javadev.repository.LectureRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -120,7 +118,6 @@ public class AdminController {
 
         List<Lecture> lectureList = (List<Lecture>) lectureRepository.findAll();
         lectureList.sort(Comparator.comparing(Lecture::getDate));
-
         Map<String, Object> lectureParams = new HashMap<>();
         lectureParams.put("lectureList", lectureList);
 
@@ -139,5 +136,80 @@ public class AdminController {
         modelAndView.setViewName("admin_html/admin_attendances");
 
         return modelAndView;
+    }
+
+    @PutMapping("/attendances/{lectureId}/{studentId}/present")
+    public ModelAndView updateAttendancePresent (@PathVariable("lectureId")  Long lectureId,
+                                                 @PathVariable("studentId") Long studentId){
+
+        Lecture lecture = new Lecture();
+        Student student = new Student();
+
+        List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
+        Optional<Lecture> lectureOpt = lectureRepository.findById(lectureId);
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+
+        if(lectureOpt.isPresent()){
+            lecture = lectureOpt.get();
+        }
+        if(studentOpt.isPresent()) {
+            student = studentOpt.get();
+        }
+
+        if(attendanceList.size() == 0){
+            Student stu = new Student();
+            attendance = new Attendance();
+            attendance.setLecture(lecture);
+            attendance.setStudent(student);
+            stu.addAttendance(attendance);
+        }
+
+
+        return new ModelAndView("redirect:/admin/attendances");
+    }
+
+    @PutMapping("/attendances/{lectureId}/{studentId}/absent")
+    public ModelAndView updateAttendanceAbsent (@PathVariable("lectureId")  Long lectureId,
+                                          @PathVariable("studentId") Long studentId){
+
+        Lecture lecture = new Lecture();
+        Student student = new Student();
+
+        List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
+        Optional<Lecture> lectureOpt = lectureRepository.findById(lectureId);
+        Optional <Student> studentOpt = studentRepository.findById(studentId);
+
+        if(lectureOpt.isPresent()){
+            lecture = lectureOpt.get();
+        }
+        if(studentOpt.isPresent()) {
+            student = studentOpt.get();
+        }
+
+        for(Attendance a: attendanceList) {
+            attendanceRepository.deleteById(a.getId());
+        }
+
+        return new ModelAndView("redirect:/admin/attendance");
+    }
+
+
+    @RequestMapping("/test")
+    public String test(){
+        String existsStr = "";
+        StringBuilder builder = new StringBuilder();
+        List <Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(2L,9L);
+
+        for(Attendance a : attendanceList)
+        if(attendanceRepository.existsById(a.getId())){
+            existsStr = " exists: true";
+        }else{
+            existsStr = " exists: false";
+        }
+
+        for(Attendance a : attendanceList){
+            builder.append("\nId: " +  a.getId() + "\nstudent: " + a.getStudent().getLastName());
+        }
+        return builder.toString() + existsStr;
     }
 }

@@ -28,6 +28,7 @@
             </ul>
         </div>
     </div>
+
     <div class="content-body">
         <div class="title">
             <p>Student Attendance List</p>
@@ -57,16 +58,54 @@
                 <tr th:each="student : ${studentList}">
                     <td th:text="${student.firstName} +' '+ ${student.lastName}">student</td>
                     <td class="attendance-btn" id="attendanceTd" th:each="lecture : ${lectureList}">
-                        <button id="buttonId" th:text="${lecture.id} +''+ ${student.id}"></button>
+                        <button id="buttonId"
+                                th:text="${lecture.id} +''+ ${student.id}"
+                                th:attr="onclick=|UpdateAttendance.showUpdateAttendance('${lecture.id}', '${student.id}')|">
+                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <table class="table">
             <tfoot class="table-footer">
-
             </tfoot>
         </table>
+
+        <form th:action="@{#}" id="updateAttendanceForm" th:method="put">
+            <div id="modal-updateAttendance" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a style="color: white">Attendance</a>
+                                </td>
+                                <td>
+                                    <div class="cross-btn">
+                                        <button type="reset"  th:onclick="|UpdateAttendance.cancelUpdate()|"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="modal-head">
+                        <tbody class="modal-body">
+                        <tr>
+                            <td class="absent-btn">
+                                <button type="submit" th:onclick="|UpdateAttendance.absent()|"></button>
+                            </td>
+                            <td class="present-btn">
+                                <button type="submit" th:onclick="|UpdateAttendance.present()|"></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
     </div>
     <div class="footer">
         <p>JavaDev Academy @Copyright Maciej Szałek</p>

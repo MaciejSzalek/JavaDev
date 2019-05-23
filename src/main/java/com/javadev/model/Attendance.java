@@ -46,18 +46,4 @@ public class Attendance implements Serializable {
         this.lecture = lecture;
     }
 
-    @Column(name = "attendance_status")
-    private Boolean attendanceStatus;
-
-    public Boolean getAttendanceStatus() {
-        return attendanceStatus;
-    }
-
-    public void setAttendanceStatus(Boolean attendanceStatus) {
-        this.attendanceStatus = attendanceStatus;
-    }
-
-    public void deleteAttendanceByStudentId(Long id){
-
-    }
 }
