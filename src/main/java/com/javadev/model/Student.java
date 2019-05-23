@@ -34,21 +34,6 @@ public class Student {
     @Column (name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private Set<Attendance> attendance = new HashSet<>();
-
-    public Set<Attendance> getAttendance(){
-        return attendance;
-    }
-
-    public void setAttendance(Set<Attendance> attendance) {
-        this.attendance = attendance;
-    }
-
-    public void addAttendance(Attendance attendance) {
-        this.attendance.add(attendance);
-    }
-
     public Long getId() {
         return id;
     }

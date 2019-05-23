@@ -142,55 +142,28 @@ public class AdminController {
     public ModelAndView updateAttendancePresent (@PathVariable("lectureId")  Long lectureId,
                                                  @PathVariable("studentId") Long studentId){
 
-        Lecture lecture = new Lecture();
-        Student student = new Student();
-
         List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
-        Optional<Lecture> lectureOpt = lectureRepository.findById(lectureId);
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
-
-        if(lectureOpt.isPresent()){
-            lecture = lectureOpt.get();
-        }
-        if(studentOpt.isPresent()) {
-            student = studentOpt.get();
-        }
-
         if(attendanceList.size() == 0){
-            Student stu = new Student();
-            attendance = new Attendance();
-            attendance.setLecture(lecture);
-            attendance.setStudent(student);
-            stu.addAttendance(attendance);
+            Attendance attendance = new Attendance();
+            attendance.setLectureId(lectureId);
+            attendance.setStudentId(studentId);
+            attendanceRepository.save(attendance);
         }
-
 
         return new ModelAndView("redirect:/admin/attendances");
     }
 
     @PutMapping("/attendances/{lectureId}/{studentId}/absent")
     public ModelAndView updateAttendanceAbsent (@PathVariable("lectureId")  Long lectureId,
-                                          @PathVariable("studentId") Long studentId){
-
-        Lecture lecture = new Lecture();
-        Student student = new Student();
+                                                @PathVariable("studentId") Long studentId){
 
         List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
-        Optional<Lecture> lectureOpt = lectureRepository.findById(lectureId);
-        Optional <Student> studentOpt = studentRepository.findById(studentId);
-
-        if(lectureOpt.isPresent()){
-            lecture = lectureOpt.get();
+        if(attendanceList.size() !=0 ){
+            for(Attendance a: attendanceList) {
+                attendanceRepository.deleteById(a.getId());
+            }
         }
-        if(studentOpt.isPresent()) {
-            student = studentOpt.get();
-        }
-
-        for(Attendance a: attendanceList) {
-            attendanceRepository.deleteById(a.getId());
-        }
-
-        return new ModelAndView("redirect:/admin/attendance");
+        return new ModelAndView("redirect:/admin/attendances");
     }
 
 
@@ -208,7 +181,7 @@ public class AdminController {
         }
 
         for(Attendance a : attendanceList){
-            builder.append("\nId: " +  a.getId() + "\nstudent: " + a.getStudent().getLastName());
+            builder.append("\nId: " +  a.getId() + "\nstudent: ") ;
         }
         return builder.toString() + existsStr;
     }

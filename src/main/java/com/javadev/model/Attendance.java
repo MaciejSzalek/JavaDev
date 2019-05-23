@@ -22,28 +22,25 @@ public class Attendance implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @Column(name = "student_id")
+    private Long studentId;
 
-    public Student getStudent(){
-        return student;
+    @Column(name = "lecture_id")
+    private Long lectureId;
+
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public Long getLectureId() {
+        return lectureId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "lecture_id")
-    private Lecture lecture;
-
-    public Lecture getLecture() {
-        return lecture;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
-    public void setLecture(Lecture lecture) {
-        this.lecture = lecture;
+    public void setLectureId(Long lectureId) {
+        this.lectureId = lectureId;
     }
-
 }

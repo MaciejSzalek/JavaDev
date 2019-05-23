@@ -129,7 +129,7 @@
                     <div class="modal-body">
                         <div>
                             <label>Id</label>
-                            <input id="editLectureId" required="required" type="text" th:field="*{id}"/>
+                            <p id="editLectureId" required="required" type="text" th:field="*{id}" th:text="${id}"></p>
 
                             <label>Date</label>
                             <input id="editLectureDate" required="required" type="text" th:field="*{date}"/>

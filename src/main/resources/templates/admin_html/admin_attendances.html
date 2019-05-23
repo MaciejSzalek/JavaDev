@@ -32,14 +32,10 @@
     <div class="content-body">
         <div class="title">
             <p>Student Attendance List</p>
-            <p id="test"></p>
-            <p id="tr"></p>
-            <p id="td"></p>
             <div hidden id="attendanceCompareList">
                 <table id="compareTab">
                     <tr th:each="attendance : ${attendanceList}">
-                        <td th:value="${attendance.lecture.getId()} +''+ ${attendance.student.getId()}"
-                            th:text="${attendance.lecture.getId()} +''+ ${attendance.student.getId()}"></td>
+                        <td th:text="${attendance.lectureId} +''+ ${attendance.studentId}"></td>
                     </tr>
                 </table>
             </div>
@@ -60,7 +56,9 @@
                     <td class="attendance-btn" id="attendanceTd" th:each="lecture : ${lectureList}">
                         <button id="buttonId"
                                 th:text="${lecture.id} +''+ ${student.id}"
-                                th:attr="onclick=|UpdateAttendance.showUpdateAttendance('${lecture.id}', '${student.id}')|">
+                                th:attr="onclick=|UpdateAttendance.showUpdateAttendance(
+                                '${lecture.id}',
+                                '${student.id}')|">
                         </button>
                     </td>
                 </tr>

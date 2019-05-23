@@ -11,9 +11,7 @@ import java.util.Optional;
 
 public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
 
-    //@Query("select a from Attendance a where a.student_id= :student_id and a.lecture_id = :lecture_id ")
-    //List<Attendance> findAttendanceByStudentAndLectureId(String student_id, String lecture_id);
-    @Query("SELECT a FROM Attendance a WHERE a.lecture.id = :lecture AND a.student.id = :student ")
+    @Query("SELECT a FROM Attendance a WHERE a.lectureId = :lecture AND a.studentId = :student ")
     List<Attendance> findAttendanceByLectureAndStudent(@Param("lecture") Long lectureId,
-                                                         @Param("student") Long studentId);
+                                                       @Param("student") Long studentId);
 }
