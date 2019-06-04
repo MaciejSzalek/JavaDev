@@ -2,6 +2,7 @@ const AddStudent = new function () {
 
     const modalAdd = document.getElementById('modal-add');
     const addHeader = modalAdd.querySelector('#addHeader');
+    const errorAddPassword = document.getElementById('errorAddPassword');
 
     this.showAdd = function () {
         modalAdd.style.display = 'block';
@@ -9,6 +10,7 @@ const AddStudent = new function () {
     };
     this.cancelAddStudent = function () {
         modalAdd.style.display = 'none';
+        errorAddPassword.style.display = 'none';
         this.close();
     };
 
@@ -16,10 +18,12 @@ const AddStudent = new function () {
         var password = document.getElementById('password');
         var confirmPassword = document.getElementById('confirmPassword');
         if(password.value !== confirmPassword.value){
+            errorAddPassword.style.color = 'red';
+            errorAddPassword.style.display = 'block';
             confirmPassword.value = "";
-            confirmPassword.placeholder = "Confirm password don't match";
             return false;
         }else{
+            errorAddPassword.style.display = 'none';
             return true;
         }
     };
@@ -96,6 +100,7 @@ const EditStudent = new function () {
     const editStudyField = document.getElementById('editStudyField');
     const editStudyYear = document.getElementById('editStudyYear');
     const editPassword = document.getElementById('editPassword');
+    const errorEditPassword = document.getElementById('errorEditPassword');
 
     this.showEdit = function (tId, tFirstName, tLastName, tMail,
                               tIndexNumber, tStudyField, tStudyYear, tPassword) {
@@ -123,6 +128,7 @@ const EditStudent = new function () {
 
     this.cancelEdit = function () {
         modalEdit.style.display = 'none';
+        errorEditPassword.style.display = 'none';
         this.close();
     };
 
@@ -130,12 +136,14 @@ const EditStudent = new function () {
         var password = document.getElementById('editPassword');
         var confirmPassword = document.getElementById('confirmEditPassword');
         if(password.value !== confirmPassword.value){
+            errorEditPassword.style.color = 'red';
+            errorEditPassword.style.display = 'block';
             confirmPassword.value = "";
-            confirmPassword.placeholder = "Confirm password don't match";
             return false;
         }else{
             var url = "/admin/students/" + id + "/update";
             document.getElementById('editForm').setAttribute('action', url);
+            errorEditPassword.style.display = 'none';
             return true;
         }
     };
@@ -189,3 +197,4 @@ function searchFunction(){
         }
     }
 }
+

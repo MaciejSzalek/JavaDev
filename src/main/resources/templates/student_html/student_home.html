@@ -11,19 +11,23 @@
     <div class="header">
         <div class="cssmenu">
             <ul>
-                <li class ='active'><a href='/'>Home</a></li>
-                <li><a href='/student'>Student</a></li>
-                <li><a href='/lecture'>Lecture</a></li>
-                <li><a href='/attendance'>Attendance</a></li>
-                <li style="float:right; margin-right: 4px">
-                    <a  href="#">Maciej Szałek</a>
-                </li>
+                <li class ='active'><a href='/student/home'>Home</a></li>
+                <li><a href='/student/details'>Details</a></li>
+                <li><a href='/student/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#" th:text="${userName}">User</a></li>
+                        <div class="dropdown-content">
+                            <a href="/login?logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
             </ul>
         </div>
     </div>
     <div class="body">
         <div class="title">
-            <p>WELCOME ADMIN HOME PAGE </p>
+            <p th:text="${welcome}">JavaDev Student Console </p>
         </div>
     </div>
     <div class="footer">

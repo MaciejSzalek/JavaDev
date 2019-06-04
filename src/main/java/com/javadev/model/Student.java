@@ -2,6 +2,7 @@ package com.javadev.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,6 +34,23 @@ public class Student {
 
     @Column (name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "student",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private Set<Role> role = new HashSet<>();
+
+    public Set<Role> getRole(){
+        return this.role;
+    }
+
+    public void setRole(Set<Role> role) {
+        this.role = role;
+    }
+
+    public void addRole(Role role) {
+        this.role.add(role);
+    }
 
     public Long getId() {
         return id;
@@ -97,4 +115,5 @@ public class Student {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

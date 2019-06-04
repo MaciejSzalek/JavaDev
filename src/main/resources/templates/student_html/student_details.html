@@ -1,0 +1,124 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/user.js}" defer></script>
+    <title>Details</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="cssmenu">
+            <ul>
+                <li><a href='/student/home'>Home</a></li>
+                <li class ='active'><a href='/student/details'>Details</a></li>
+                <li><a href='/student/attendances'>Attendances</a></li>
+                <div class="dropdown">
+                    <ul>
+                        <li><a href="#" th:text="${userName}">User</a></li>
+                        <div class="dropdown-content">
+                            <a href="/login?logout">Logout</a>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="title">
+            <p>Details</p>
+        </div>
+        <table id="studentDetails" class="table" style="width: 50%" th:object="${student}">
+            <thead class="table-head">
+            <tr>
+                <th>Description</th>
+                <th>Detail</th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+            <tr>
+                <td>Id</td>
+                <td id="detailsId" th:text="${student.id}"></td>
+            </tr>
+            <tr>
+                <td>First name: </td>
+                <td id="detailsFirstName" th:text="${student.firstName}">firstName</td>
+            </tr>
+            <tr>
+                <td>Last name: </td>
+                <td id="detailsLastName" th:text="${student.lastName}">lastName</td>
+            </tr>
+            <tr>
+                <td>E-mail: </td>
+                <td id="detailsMail" th:text="${student.mail}">mail</td>
+            </tr>
+            <tr>
+                <td>Index number: </td>
+                <td id="detailsIndexNumber" th:text="${student.indexNumber}">indexNumber</td>
+            </tr>
+            <tr>
+                <td>Study Field: </td>
+                <td id="detailsStudyField" th:text="${student.studyField}">studyField</td>
+            </tr>
+            <tr>
+                <td>Study year: </td>
+                <td id="detailsStudyYear" th:text="${student.studyYear}">studyYear</td>
+            </tr>
+            <tr>
+                <td>Password: </td>
+                <td id="detailsPassword" th:text="${student.password}">password</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table" style="width: 50%">
+            <tfoot class="table-footer">
+            <tr>
+                <td>
+                    <div class="addbtn">
+                        <button th:onclick="|EditStudentPassword.showEditPassword()|">Edit password</button>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <a id="test" style="display: none">TEST SHOW TEXT</a>
+
+        <form id="editPasswordForm" th:action="@{#}" th:object="${student}" th:method="put">
+            <div id="modal-password" class="modal">
+                <div class="modal-container" style="width: 500px">
+                    <div class="modal-header">
+                        <a>New Password</a>
+                    </div>
+                    <div class="modal-body">
+                        <p id="editId" type="text" th:text="${id}"><p>
+                        <label>Password</label>
+                        <input id="editPassword" title="password" required="required" type="password"
+                               placeholder="new password.." />
+                        <label>Confirm password</label>
+                        <div id="errorEditPassword" style="display: none;">
+                            <a>confirm password don't match</a>
+                        </div>
+                        <input id="confirmEditPassword" title="confirm" required="required" type="password"
+                               placeholder="confirm new password.."/>
+                    </div>
+                    <div class = "modal-footer">
+                        <div class="modal-button">
+                            <button type="reset" th:onclick="|EditStudentPassword.cancelEditPassword()|">Cancel</button>
+                            <button type="submit" th:onclick="|return EditStudentPassword.passwordValidate()|">
+                                Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright by Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

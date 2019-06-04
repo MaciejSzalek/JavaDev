@@ -1,0 +1,75 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/register.css" th:href="@{/css/register.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <title>Register</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+    </div>
+    <div class="body">
+        <div class="register">
+            <div class="register-title">
+                <p>Register</p>
+            </div>
+            <form name="registerForm" th:action="@{/register/confirm}" th:object="${student}" method="post">
+                <div class="register-input">
+                    <div style="color: red" th:unless="${#strings.isEmpty(errorMessage)}">
+                        <div th:text = ${errorMessage}>
+                            <a></a>
+                        </div>
+                    </div>
+                    <label>First Name</label>
+                    <input required="required" type="text" placeholder="first name..." th:field="*{firstName}"/>
+
+                    <label>Last Name</label>
+                    <input required="required" type="text" placeholder="last name..." th:field="*{lastName}"/>
+
+                    <label>E-mail</label>
+                    <input required="required" type="text" placeholder="e-mail..." th:field="*{mail}"/>
+
+                    <label>Index number</label>
+                    <input required="required" type="text" placeholder="index number..." th:field="*{indexNumber}"/>
+
+                    <label>Study field</label>
+                    <input required="required" type="text" placeholder="study field..." th:field="*{studyField}"/>
+
+                    <label>Study year</label>
+                    <select required="required" id="year" th:field="*{studyYear}">
+                        <option selected="selected" value="">select study year..</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+
+                    <label>Password</label>
+                    <input required="required" id="password" type="password"
+                           placeholder="password..." th:field="*{password}"/>
+
+                    <label>Confirm password</label>
+                    <input required="required" id="confirmPassword" type="password"
+                           placeholder="confirm password..."/>
+                </div>
+                <div class="register-btn">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+            <div class="register-a">
+                <a></a>
+                <a href="/login">Click here to login</a>
+                <a></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright by Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

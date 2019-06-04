@@ -2,12 +2,13 @@ package com.javadev.controller;
 
 import com.javadev.model.Attendance;
 import com.javadev.model.Lecture;
+import com.javadev.model.Role;
 import com.javadev.model.Student;
 import com.javadev.repository.AttendanceRepository;
 import com.javadev.repository.LectureRepository;
+import com.javadev.repository.RoleRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,20 +21,17 @@ public class AdminController {
     private final StudentRepository studentRepository;
     private final LectureRepository lectureRepository;
     private final AttendanceRepository attendanceRepository;
-    private Attendance attendance;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public AdminController(StudentRepository studentRepository,
                            LectureRepository lectureRepository,
-                           AttendanceRepository attendanceRepository){
+                           AttendanceRepository attendanceRepository,
+                           RoleRepository roleRepository){
         this.studentRepository = studentRepository;
         this.lectureRepository = lectureRepository;
         this.attendanceRepository = attendanceRepository;
-    }
-
-    @RequestMapping("/logout")
-    public ModelAndView logoutPage(){
-        return new ModelAndView("redirect:/");
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/home")
@@ -59,6 +57,10 @@ public class AdminController {
 
     @PostMapping("/students/add")
     public ModelAndView addStudent(@ModelAttribute Student student){
+        Role role = new Role();
+        role.setRole("STUDENT");
+        role.setStudent(student);
+        student.addRole(role);
         studentRepository.save(student);
         return new ModelAndView("redirect:/admin/students");
     }
@@ -169,20 +171,15 @@ public class AdminController {
 
     @RequestMapping("/test")
     public String test(){
-        String existsStr = "";
-        StringBuilder builder = new StringBuilder();
-        List <Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(2L,9L);
-
-        for(Attendance a : attendanceList)
-        if(attendanceRepository.existsById(a.getId())){
-            existsStr = " exists: true";
-        }else{
-            existsStr = " exists: false";
+        Student student;
+        String existsStr = "Test no exists";
+        Optional<Student> studentOptional = studentRepository.findStudentByMailOrIndexNumber("", "123456");
+        if(studentOptional.isPresent()){
+            student = studentOptional.get();
+            Role role = roleRepository.findRoleByStudent(student);
+            existsStr = "Student id:" + student.getId().toString() + "Role: " + role.getRole();
         }
 
-        for(Attendance a : attendanceList){
-            builder.append("\nId: " +  a.getId() + "\nstudent: ") ;
-        }
-        return builder.toString() + existsStr;
+        return existsStr;
     }
 }

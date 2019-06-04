@@ -19,9 +19,9 @@
                 <li><a href='/admin/attendances'>Attendances</a></li>
                 <div class="dropdown">
                     <ul>
-                        <li><a href="#">Maciej Szałek</a></li>
+                        <li><a href="#">Admin</a></li>
                         <div class="dropdown-content">
-                            <a href="/logout">Logout</a>
+                            <a href="/login?logout">Logout</a>
                         </div>
                     </ul>
                 </div>
@@ -128,9 +128,7 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <label>Id</label>
                             <p id="editLectureId" required="required" type="text" th:field="*{id}" th:text="${id}"></p>
-
                             <label>Date</label>
                             <input id="editLectureDate" required="required" type="text" th:field="*{date}"/>
 

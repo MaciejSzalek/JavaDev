@@ -1,0 +1,50 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/menu.css" th:href="@{/css/security.css}" rel="stylesheet" />
+    <title>Login</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+    </div>
+    <div class="body">
+        <div class="security">
+            <div class="security-title">
+                <p>Welcome in JavaDev</p>
+            </div>
+            <form name="loginForm" th:action="@{/login}" method="post">
+                <div class="security-input">
+                    <div style="color: red" th:if="${param.error}" class="alert alert-error">
+                        Invalid login or password.
+                        <p></p><p></p>
+                    </div>
+                    <div style="color: red" th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                        <p></p><p></p>
+                    </div>
+                    <label for="username">Login</label>
+                    <input id="username" name="username" type="text" placeholder="email / index number.."/>
+
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" placeholder="password.."/>
+                </div>
+                <div class="signin-btn">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <div class="security-register">
+                <a></a>
+                <a href="/register">Click here to register</a>
+                <a></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>JavaDev Academy @Copyright by Maciej Szałek</p>
+    </div>
+</div>
+</body>
+</html>

@@ -19,9 +19,9 @@
                 <li><a href='/admin/attendances'>Attendances</a></li>
                 <div class="dropdown">
                     <ul>
-                        <li><a href="#">Maciej Szałek</a></li>
+                        <li><a href="#">Admin</a></li>
                         <div class="dropdown-content">
-                            <a href="/logout">Logout</a>
+                            <a href="/login?logout">Logout</a>
                         </div>
                     </ul>
                 </div>
@@ -30,7 +30,7 @@
     </div>
     <div class="content-body">
         <div class="title">
-            <p>STUDENTS LIST </p>
+            <p>Students List</p>
         </div>
         <div class="search-input">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search student..">
@@ -114,8 +114,8 @@
                                 <label>Last Name</label>
                                 <input required="required" type="text" placeholder="last name..." th:field="*{lastName}"/>
 
-                                <label>Mail</label>
-                                <input required="required" type="text" placeholder="mail..." th:field="*{mail}"/>
+                                <label>E-mail</label>
+                                <input required="required" type="text" placeholder="e-mail..." th:field="*{mail}"/>
 
                                 <label>Index number</label>
                                 <input required="required" type="text" placeholder="index number..." th:field="*{indexNumber}"/>
@@ -138,6 +138,9 @@
                                        placeholder="password..." th:field="*{password}"/>
 
                                 <label>Confirm password</label>
+                                <div id="errorAddPassword" style="display: none;">
+                                    <a>confirm password don't match</a>
+                                </div>
                                 <input required="required" id="confirmPassword" type="text"
                                        placeholder="confirm password..."/>
                             </div>
@@ -159,15 +162,14 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <label>Id</label>
-                            <p id="editId" type="text" th:field="*{id}"><p>
+                            <p id="editId" type="text" th:text="${id}"><p>
                             <label>First Name</label>
                             <input id="editFirstName" required="required" type="text" th:field="*{firstName}"/>
 
                             <label>Last Name</label>
                             <input id="editLastName" required="required" type="text" th:field="*{lastName}"/>
 
-                            <label>Mail</label>
+                            <label>E-mail</label>
                             <input id="editMail" required="required" type="text" th:field="*{mail}"/>
 
                             <label>Index number</label>
@@ -191,6 +193,9 @@
                                    th:field="*{password}"/>
 
                             <label>Confirm password</label>
+                            <div id="errorEditPassword" style="display: none;">
+                                <a>confirm password don't match</a>
+                            </div>
                             <input required="required" id="confirmEditPassword" type="text"/>
                         </div>
                     </div>

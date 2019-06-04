@@ -3,7 +3,7 @@
     <meta charset="UTF-8" />
     <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
-    <title>Admin home</title>
+    <title>Attendance</title>
 </head>
 
 <body>
@@ -11,13 +11,12 @@
     <div class="header">
         <div class="cssmenu">
             <ul>
-                <li class ='active'><a href='/admin/home'>Home</a></li>
-                <li><a href='/admin/students'>Students</a></li>
-                <li><a href='/admin/lectures'>Lectures</a></li>
-                <li><a href='/admin/attendances'>Attendances</a></li>
+                <li><a href='/student/home'>Home</a></li>
+                <li><a href='/student/details'>Details</a></li>
+                <li class ='active'><a href='/student/attendances'>Attendances</a></li>
                 <div class="dropdown">
                     <ul>
-                        <li><a href="#">Admin</a></li>
+                        <li><a href="#" th:text="${userName}">User</a></li>
                         <div class="dropdown-content">
                             <a href="/login?logout">Logout</a>
                         </div>
@@ -28,7 +27,7 @@
     </div>
     <div class="body">
         <div class="title">
-            <p>Welcome in Admin Home Page </p>
+            <p>Attendance</p>
         </div>
     </div>
     <div class="footer">
