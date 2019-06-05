@@ -3,10 +3,12 @@
     <meta charset="UTF-8" />
     <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" />
+    <link href="../static/css/modal.css" th:href="@{/css/modal.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/user.js}" defer></script>
     <title>Attendance</title>
 </head>
 
-<body>
+<body onload="checkStudentAttendance()">
 <div class="container">
     <div class="header">
         <div class="cssmenu">
@@ -29,6 +31,74 @@
         <div class="title">
             <p>Attendance</p>
         </div>
+        <h1 hidden id="userId" th:text="${userId}"></h1>
+        <div hidden id="attendanceCompareList">
+            <table id="compareTab">
+                <tr th:each="attendance : ${attendanceList}">
+                    <td th:text="${attendance.lectureId} +''+ ${attendance.studentId}"></td>
+                </tr>
+            </table>
+        </div>
+        <table id="lectureTable" class="table" style="width: 80%">
+            <thead class="table-head">
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Lecturer</th>
+                <th>Attendance</th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+            <tr th:each="lecture : ${lectureList}">
+                <td th:text="${lecture.date}">Date</td>
+                <td th:text="${lecture.title}">Title</td>
+                <td th:text="${lecture.lecturer}">Lecturer</td>
+                <td class="attendance-btn" id="attendanceTd">
+                    <button id="buttonId"
+                            th:text="${lecture.id} +''+ ${userId}"
+                            th:attr="onclick=|UpdateAttendance.showUpdateAttendance(
+                                '${lecture.id}')|">
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form th:action="@{#}" id="updateAttendanceForm" th:method="put">
+            <div id="modal-updateAttendance" class="modal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a style="color: white">Attendance</a>
+                                </td>
+                                <td>
+                                    <div class="cross-btn">
+                                        <button type="reset"  th:onclick="|UpdateAttendance.cancelUpdate()|"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="modal-head">
+                        <tbody class="modal-body">
+                        <tr>
+                            <td class="absent-btn">
+                                <button type="submit" th:onclick="|UpdateAttendance.absent()|"></button>
+                            </td>
+                            <td class="present-btn">
+                                <button type="submit" th:onclick="|UpdateAttendance.present()|"></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
     </div>
     <div class="footer">
         <p>JavaDev Academy @Copyright by Maciej Szałek</p>

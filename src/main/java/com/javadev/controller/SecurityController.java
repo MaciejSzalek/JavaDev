@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -72,9 +73,9 @@ public class SecurityController {
     @PostMapping("/register/confirm")
     public ModelAndView registerConfirm(@ModelAttribute Student student){
         ModelAndView mav = new ModelAndView();
-        Optional<Student> optionalStudent = studentRepository.findStudentByMailOrIndexNumber(student.getMail(),
+        List<Student> students = studentRepository.findStudentByMailOrIndexNumber(student.getMail(),
                 student.getIndexNumber());
-        if(optionalStudent.isPresent()){
+        if(students.size() > 0){
             String message = "Account exists !!! Check your e-mail or index number ";
             mav.addObject("errorMessage", message);
             mav.setViewName("security_html/register");

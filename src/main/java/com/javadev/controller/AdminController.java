@@ -57,12 +57,31 @@ public class AdminController {
 
     @PostMapping("/students/add")
     public ModelAndView addStudent(@ModelAttribute Student student){
-        Role role = new Role();
-        role.setRole("STUDENT");
-        role.setStudent(student);
-        student.addRole(role);
-        studentRepository.save(student);
-        return new ModelAndView("redirect:/admin/students");
+
+        ModelAndView mav = new ModelAndView();
+        List<Student> students = studentRepository.findStudentByMailOrIndexNumber(student.getMail(),
+                student.getIndexNumber());
+
+        if(students.size() > 0){
+            List<Student> studentList = (List<Student>) studentRepository.findAll();
+            studentList.sort(Comparator.comparing(Student::getLastName));
+            Map<String, Object> params = new HashMap<>();
+            params.put("studentList", studentList);
+
+            String message = "Account exists !!! Check e-mail and index number ";
+            mav.addObject("errorMessage", message);
+            mav.addAllObjects(params);
+            mav.setViewName("admin_html/admin_students");
+
+        }else{
+            Role role = new Role();
+            role.setRole("STUDENT");
+            role.setStudent(student);
+            student.addRole(role);
+            studentRepository.save(student);
+            mav.setViewName("redirect:/admin/students");
+        }
+        return mav;
     }
     @PutMapping("/students/{id}/update")
     public ModelAndView updateStudent(@ModelAttribute Student student){
@@ -151,7 +170,6 @@ public class AdminController {
             attendance.setStudentId(studentId);
             attendanceRepository.save(attendance);
         }
-
         return new ModelAndView("redirect:/admin/attendances");
     }
 
@@ -168,18 +186,4 @@ public class AdminController {
         return new ModelAndView("redirect:/admin/attendances");
     }
 
-
-    @RequestMapping("/test")
-    public String test(){
-        Student student;
-        String existsStr = "Test no exists";
-        Optional<Student> studentOptional = studentRepository.findStudentByMailOrIndexNumber("", "123456");
-        if(studentOptional.isPresent()){
-            student = studentOptional.get();
-            Role role = roleRepository.findRoleByStudent(student);
-            existsStr = "Student id:" + student.getId().toString() + "Role: " + role.getRole();
-        }
-
-        return existsStr;
-    }
 }

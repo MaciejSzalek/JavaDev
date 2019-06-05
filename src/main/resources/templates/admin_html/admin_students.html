@@ -32,6 +32,12 @@
         <div class="title">
             <p>Students List</p>
         </div>
+        <div style="color: red" th:unless="${#strings.isEmpty(errorMessage)}">
+            <p></p><p></p><p></p>
+            <div th:text = ${errorMessage}>
+            </div>
+            <p></p><p></p><p></p>
+        </div>
         <div class="search-input">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search student..">
         </div>

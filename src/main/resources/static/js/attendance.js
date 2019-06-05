@@ -1,18 +1,3 @@
-
-function test(x) {
-    var table, tr, td, trIndex, tdIndex, c;
-    table = document.getElementById("attendanceTable");
-    tr = table.getElementsByTagName("tr");
-    td = table.getElementsByTagName("td");
-    trIndex = x.parentNode.rowIndex;
-    tdIndex = x.cellIndex;
-
-    table.rows[2].cells[2].style.backgroundColor = "red";
-
-    document.getElementById("tr").innerHTML = "Row index is: " + trIndex;
-    document.getElementById("td").innerHTML = "Column index is: " + tdIndex;
-
-}
 const UpdateAttendance = new function () {
     var attendanceId;
     var lectureId;

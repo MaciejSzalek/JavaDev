@@ -32,13 +32,13 @@
             <p>Details</p>
         </div>
         <table id="studentDetails" class="table" style="width: 50%" th:object="${student}">
-            <thead class="table-head">
+            <thead class="table-head" style="padding: 10px">
             <tr>
                 <th>Description</th>
                 <th>Detail</th>
             </tr>
             </thead>
-            <tbody class="table-body">
+            <tbody class="table-body" style="padding: 10px">
             <tr>
                 <td>Id</td>
                 <td id="detailsId" th:text="${student.id}"></td>
@@ -93,10 +93,16 @@
                         <a>New Password</a>
                     </div>
                     <div class="modal-body">
-                        <p id="editId" type="text" th:text="${id}"><p>
+                        <input style="display: none" title="id" th:field="*{id}"/>
+                        <input style="display: none" title="firstName" th:field="*{firstName}"/>
+                        <input style="display: none" title="lastName"  th:field="*{lastName}"/>
+                        <input style="display: none" title="mail" th:field="*{mail}"/>
+                        <input style="display: none" title="indexNumber" th:field="*{indexNumber}"/>
+                        <input style="display: none" title="studyField" th:field="*{studyField}" />
+                        <input style="display: none" title="studyYear" th:field="*{studyYear}" />
                         <label>Password</label>
                         <input id="editPassword" title="password" required="required" type="password"
-                               placeholder="new password.." />
+                               placeholder="new password.." th:field="*{password}"/>
                         <label>Confirm password</label>
                         <div id="errorEditPassword" style="display: none;">
                             <a>confirm password don't match</a>

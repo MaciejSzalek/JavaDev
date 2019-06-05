@@ -42,9 +42,11 @@ public class UserDetailsService implements
         User user;
         List<GrantedAuthority> authList = new ArrayList<>();
 
-        Optional<Student> studentOptional =  studentRepository.findStudentByMailOrIndexNumber(login, login);
-        if(studentOptional.isPresent()){
-            student = studentOptional.get();
+        List<Student> students =  studentRepository.findStudentByMailOrIndexNumber(login, login);
+        if(students.size() > 0){
+            for(Student s: students){
+                student = s;
+            }
             role = roleRepository.findRoleByStudent(student);
             authList.add(new SimpleGrantedAuthority(role.getRole()));
             String password = passwordEncoder().encode(student.getPassword());
