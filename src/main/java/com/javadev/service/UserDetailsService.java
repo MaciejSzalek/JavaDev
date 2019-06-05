@@ -5,20 +5,15 @@ import com.javadev.model.Student;
 import com.javadev.repository.RoleRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service("userDetailsService")
 public class UserDetailsService implements
@@ -27,8 +22,6 @@ public class UserDetailsService implements
     private final StudentRepository studentRepository;
     private final RoleRepository roleRepository;
     private Student student;
-    private Role role;
-
 
     @Autowired
     public UserDetailsService(StudentRepository studentRepository, RoleRepository roleRepository){
@@ -47,7 +40,7 @@ public class UserDetailsService implements
             for(Student s: students){
                 student = s;
             }
-            role = roleRepository.findRoleByStudent(student);
+            Role role = roleRepository.findRoleByStudent(student);
             authList.add(new SimpleGrantedAuthority(role.getRole()));
             String password = passwordEncoder().encode(student.getPassword());
             user = new User(login , password,

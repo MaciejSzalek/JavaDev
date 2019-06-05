@@ -6,7 +6,6 @@ import com.javadev.model.Role;
 import com.javadev.model.Student;
 import com.javadev.repository.AttendanceRepository;
 import com.javadev.repository.LectureRepository;
-import com.javadev.repository.RoleRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +20,14 @@ public class AdminController {
     private final StudentRepository studentRepository;
     private final LectureRepository lectureRepository;
     private final AttendanceRepository attendanceRepository;
-    private final RoleRepository roleRepository;
 
     @Autowired
     public AdminController(StudentRepository studentRepository,
                            LectureRepository lectureRepository,
-                           AttendanceRepository attendanceRepository,
-                           RoleRepository roleRepository){
+                           AttendanceRepository attendanceRepository){
         this.studentRepository = studentRepository;
         this.lectureRepository = lectureRepository;
         this.attendanceRepository = attendanceRepository;
-        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/home")

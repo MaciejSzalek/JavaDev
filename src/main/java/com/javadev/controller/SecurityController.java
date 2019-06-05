@@ -2,7 +2,6 @@ package com.javadev.controller;
 
 import com.javadev.model.Role;
 import com.javadev.model.Student;
-import com.javadev.repository.RoleRepository;
 import com.javadev.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,29 +9,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping
 public class SecurityController {
 
     private final StudentRepository studentRepository;
-    private final RoleRepository roleRepository;
 
     @Autowired
-    public SecurityController(StudentRepository studentRepository,
-                              RoleRepository roleRepository){
+    public SecurityController(StudentRepository studentRepository){
         this.studentRepository = studentRepository;
-        this.roleRepository = roleRepository;
     }
 
     @GetMapping({"/","/login"})
