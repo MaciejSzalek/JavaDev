@@ -1,10 +1,3 @@
-function test(){
-const test= document.getElementById('test');
-test.style.display = 'block';
-const modalEditPassword = document.getElementById('modal-password');
-modalEditPassword.style.display = 'block';
-}
-
 const EditStudentPassword = new function () {
     var newPassword;
     const modalEditPassword = document.getElementById('modal-password');
@@ -39,38 +32,16 @@ const EditStudentPassword = new function () {
     }
 };
 
-const UpdateAttendance = new function () {
-    var attendanceId;
-    var lectureId;
+const UpdateAttendance = new function() {
+        var lectureId;
+        const updateAttendanceForm = document.getElementById('updateAttendanceForm');
 
-    const modalUpdateAttendance = document.getElementById("modal-updateAttendance");
-    const updateAttendanceHeader = modalUpdateAttendance.querySelector('#updateAttendanceHeader');
-    const updateAttendanceForm = document.getElementById('updateAttendanceForm');
-    const userId = document.getElementById('userId').innerHTML;
-
-    this.showUpdateAttendance = function (tLectureId) {
-
-        lectureId = tLectureId;
-        modalUpdateAttendance.style.display = 'block';
-        updateAttendanceHeader.textContent = "Attendance" + userId;
-    };
-
-    this.present = function () {
-        var url = "/student/attendances/" + lectureId + "/present";
-        updateAttendanceForm.setAttribute('action', url);
-    };
-
-    this.absent = function () {
-        var url = "/student/attendances/" + lectureId + "/absent";
-        updateAttendanceForm.setAttribute('action', url);
-    };
-
-    this.cancelUpdate = function () {
-        modalUpdateAttendance.style.display = 'none';
-        this.close();
-    };
-
-};
+        this.update = function (tLectureId) {
+            lectureId = tLectureId;
+            var url = "/student/attendances/" + lectureId + "/update";
+            updateAttendanceForm.setAttribute('action', url);
+        }
+}
 
 function checkStudentAttendance() {
     var compareList = [];

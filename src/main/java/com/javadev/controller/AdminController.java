@@ -127,9 +127,7 @@ public class AdminController {
     }
 
     @GetMapping("/attendances")
-    public ModelAndView attendancePage(@ModelAttribute Lecture lecture,
-                                       @ModelAttribute Student student,
-                                       @ModelAttribute Attendance attendance){
+    public ModelAndView attendancePage(){
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -155,31 +153,20 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PutMapping("/attendances/{lectureId}/{studentId}/present")
-    public ModelAndView updateAttendancePresent (@PathVariable("lectureId")  Long lectureId,
-                                                 @PathVariable("studentId") Long studentId){
-
+    @PutMapping("/attendances/{lectureId}/{studentId}/update")
+    public ModelAndView updateAttendance(@PathVariable("lectureId") Long lectureId,
+                                         @PathVariable("studentId") Long studentId){
         List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
         if(attendanceList.size() == 0){
             Attendance attendance = new Attendance();
             attendance.setLectureId(lectureId);
             attendance.setStudentId(studentId);
             attendanceRepository.save(attendance);
-        }
-        return new ModelAndView("redirect:/admin/attendances");
-    }
-
-    @PutMapping("/attendances/{lectureId}/{studentId}/absent")
-    public ModelAndView updateAttendanceAbsent (@PathVariable("lectureId")  Long lectureId,
-                                                @PathVariable("studentId") Long studentId){
-
-        List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId,studentId);
-        if(attendanceList.size() !=0 ){
+        }else{
             for(Attendance a: attendanceList) {
                 attendanceRepository.deleteById(a.getId());
             }
         }
         return new ModelAndView("redirect:/admin/attendances");
     }
-
 }

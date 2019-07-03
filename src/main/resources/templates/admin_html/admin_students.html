@@ -193,22 +193,14 @@
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </select>
-
-                            <label>Password</label>
-                            <input id="editPassword" required="required" type="text"
+                            <input style="display: none" id="editPassword" required="required" type="text"
                                    th:field="*{password}"/>
-
-                            <label>Confirm password</label>
-                            <div id="errorEditPassword" style="display: none;">
-                                <a>confirm password don't match</a>
-                            </div>
-                            <input required="required" id="confirmEditPassword" type="text"/>
                         </div>
                     </div>
                     <div class = "modal-footer">
                         <div class="modal-button">
                             <button type="reset" th:onclick="|EditStudent.cancelEdit()|">Cancel</button>
-                            <button type="submit" th:onclick="|return EditStudent.passwordValidate()|">Edit</button>
+                            <button type="submit" th:onclick="|return EditStudent.confirmEdit()|">Edit</button>
                         </div>
                     </div>
                 </div>

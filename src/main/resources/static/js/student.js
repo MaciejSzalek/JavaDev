@@ -100,7 +100,6 @@ const EditStudent = new function () {
     const editStudyField = document.getElementById('editStudyField');
     const editStudyYear = document.getElementById('editStudyYear');
     const editPassword = document.getElementById('editPassword');
-    const errorEditPassword = document.getElementById('errorEditPassword');
 
     this.showEdit = function (tId, tFirstName, tLastName, tMail,
                               tIndexNumber, tStudyField, tStudyYear, tPassword) {
@@ -132,20 +131,10 @@ const EditStudent = new function () {
         this.close();
     };
 
-    this.passwordValidate = function () {
-        var password = document.getElementById('editPassword');
-        var confirmPassword = document.getElementById('confirmEditPassword');
-        if(password.value !== confirmPassword.value){
-            errorEditPassword.style.color = 'red';
-            errorEditPassword.style.display = 'block';
-            confirmPassword.value = "";
-            return false;
-        }else{
-            var url = "/admin/students/" + id + "/update";
-            document.getElementById('editForm').setAttribute('action', url);
-            errorEditPassword.style.display = 'none';
-            return true;
-        }
+    this.confirmEdit = function () {
+        var url = "/admin/students/" + id + "/update";
+        document.getElementById('editForm').setAttribute('action', url);
+        return true;
     };
 };
 

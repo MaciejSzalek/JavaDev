@@ -78,8 +78,7 @@ public class StudentController {
     }
 
     @GetMapping("/attendances")
-    public ModelAndView attendance(@ModelAttribute Attendance attendance,
-                                   @ModelAttribute Lecture lecture){
+    public ModelAndView attendance(){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String user = auth.getName();
@@ -111,8 +110,8 @@ public class StudentController {
         return mav;
     }
 
-    @PutMapping("/attendances/{lectureId}/present")
-    public ModelAndView updateAttendancePresent (@PathVariable("lectureId")  Long lectureId){
+    @PutMapping("/attendances/{lectureId}/update")
+    public ModelAndView updateAttendance(@PathVariable("lectureId") Long lectureId){
 
         Long id = studentDB.getId();
         List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId, id);
@@ -121,16 +120,7 @@ public class StudentController {
             attendance.setLectureId(lectureId);
             attendance.setStudentId(id);
             attendanceRepository.save(attendance);
-        }
-        return new ModelAndView("redirect:/student/attendances");
-    }
-
-    @PutMapping("/attendances/{lectureId}/absent")
-    public ModelAndView updateAttendanceAbsent (@PathVariable("lectureId")  Long lectureId){
-
-        Long id = studentDB.getId();
-        List<Attendance> attendanceList = attendanceRepository.findAttendanceByLectureAndStudent(lectureId, id);
-        if(attendanceList.size() !=0 ){
+        }else{
             for(Attendance a: attendanceList) {
                 attendanceRepository.deleteById(a.getId());
             }
